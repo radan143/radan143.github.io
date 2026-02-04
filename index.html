@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>All Access Demo</title>
+<style>
+body { font-family: Arial; text-align: center; }
+video { width: 90%; max-width: 350px; border: 2px solid black; }
+button { padding: 10px; margin: 5px; }
+</style>
+</head>
+<body>
+
+<h2>Camera + Mic + Location</h2>
+
+<video id="video" autoplay></video><br>
+
+<button onclick="startCamera()">Camera</button>
+<button onclick="getLocation()">Location</button>
+<button onclick="startMic()">Mic</button>
+
+<p id="loc"></p>
+
+<script>
+let stream;
+
+// CAMERA
+function startCamera() {
+  navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    .then(s => {
+      stream = s;
+      document.getElementById("video").srcObject = s;
+    })
+    .catch(() => alert("Permission denied"));
+}
+
+// LOCATION
+function getLocation() {
+  navigator.geolocation.getCurrentPosition(pos => {
+    document.getElementById("loc").innerHTML =
+      "Lat: " + pos.coords.latitude + 
+      "<br>Long: " + pos.coords.longitude;
+  });
+}
+
+// MICROPHONE TEST
+function startMic() {
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(() => alert("Microphone working 👍"));
+}
+</script>
+
+</body>
+</html>
